@@ -139,6 +139,7 @@ export const store = new Vuex.Store({
           },
         ]
       },
+      //
       // {
       //   id: 7,
       //   subject: 'Удалить иконки',
