@@ -35,12 +35,20 @@
     },
     methods: {
       ...mapActions(['SEND_MESSAGE']),
-      sendMessage(e) {
+      sendMessage(event) {
         if (this.message === '') return;
+
+        let btn = event.currentTarget;
+        btn.disabled = true;
+        btn.style.backgroundColor = '#828282'
+        setTimeout(() => {
+          btn.disabled = false
+          btn.style.background = '';
+          }, 1000);
         // отправитель
         let sender;
         this.thatDialog.messages.forEach(message => {
-          if (e.ctrlKey) {
+          if (event.ctrlKey) {
             if (!message.out) {
              return sender = {
                 author: message.author,
@@ -132,6 +140,10 @@
       background: url('../../../static/img/send.svg') no-repeat center, #398bff;
       border: none;
       outline: none;
+      transition: .3s;
+      &:hover {
+        background-color: #0557CB;
+      }
     }
   }
 

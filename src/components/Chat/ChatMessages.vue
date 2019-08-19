@@ -38,10 +38,8 @@
 <style lang="scss">
 
   .msg-list {
-    opacity: 1;
     margin-top: auto;
     padding: 0;
-    transition: .3s;
     &__item {
       display: flex;
       flex-direction: column;

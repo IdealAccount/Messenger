@@ -1,11 +1,11 @@
 <template>
   <div class="dialogs-wrapper">
-    <ul class="dialogs">
+    <ul class="dialogs" @click="goTo">
       <router-link tag="li"
                    v-for="(dialog) of DIALOGS_REVERSE"
                    class="dialog-frame"
                    :key="dialog.id"
-                   :to="{path: `/dialog/${dialog.id}`}"
+                   :to="{name: 'dialog', params: {id: dialog.id}}"
       >
         <div class="dialog-frame__subj">
           <strong>{{dialog.subject}}</strong>
@@ -26,6 +26,13 @@
     computed: {
       ...mapGetters(['DIALOGS_REVERSE']),
     },
+    methods: {
+      goTo(event) {
+        if (event.target.tagName !== 'LI') return
+        console.log(event.target)
+
+      }
+    }
   }
 </script>
 <style lang="scss">

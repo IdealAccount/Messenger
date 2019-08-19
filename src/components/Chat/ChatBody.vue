@@ -1,5 +1,10 @@
 <template>
   <div class="chat-body">
+    <div class="viewport-loader">
+      <div class="viewport-inner viewport-one"></div>
+      <div class="viewport-inner viewport-two"></div>
+      <div class="viewport-inner viewport-two"></div>
+    </div>
     <div class="chat-wrapper" ref="track">
       <transition name="fade">
         <router-view></router-view>
@@ -15,15 +20,17 @@
       ChatMessages
     },
     data() {
-      return {}
+      return {
+        isLoad: false
+      }
     },
     mounted() {
+      this.isLoad = true;
       this.scrollToBottom()
     },
     updated() {
       this.scrollToBottom()
     },
-    computed: {},
     methods: {
       scrollToBottom() {
         this.$refs.track.scrollTop = this.$refs.track.children[0].scrollHeight
@@ -34,6 +41,7 @@
 <style lang="scss">
   .chat {
     &-body {
+      position: relative;
       height: 100%;
       overflow: hidden;
       padding-top: 20px;
@@ -59,5 +67,16 @@
   }
   .fade-leave, .fade-enter-to {
     opacity: 1;
+  }
+
+  .viewport-loader {
+    display: none;
+    top: 50%;
+    left: 50%;
+    z-index: 20;
+    transform: translate(-50%,-50%);
+    &.active {
+      display: block;
+    }
   }
 </style>
