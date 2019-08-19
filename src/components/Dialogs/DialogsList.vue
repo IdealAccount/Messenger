@@ -1,40 +1,44 @@
 <template>
-  <ul class="dialogs">
-    <router-link tag="li"
-                 class="dialog-frame"
-                 v-for="dialog of dialogs"
-                 :key="dialog.id"
-                 :to="{path: `/dialog/${dialog.id}`}"
-                 v-show="true"
-    >
-      <div class="dialog-frame__subj">
-        <strong>{{dialog.subject}}</strong>
-      </div>
-      <p class="dialog-frame__text">{{dialog.messages[0].text}}</p>
-      <span class="dialog-frame__date">{{dialog.created}}</span>
-    </router-link>
-  </ul>
+  <div class="dialogs-wrapper">
+    <ul class="dialogs">
+      <router-link tag="li"
+                   v-for="(dialog) of DIALOGS_REVERSE"
+                   class="dialog-frame"
+                   :key="dialog.id"
+                   :to="{path: `/dialog/${dialog.id}`}"
+      >
+        <div class="dialog-frame__subj">
+          <strong>{{dialog.subject}}</strong>
+        </div>
+        <p class="dialog-frame__text">{{dialog.messages[dialog.messages.length - 1].text}}</p>
+        <span class="dialog-frame__date">{{dialog.created}}</span>
+      </router-link>
+    </ul>
+  </div>
 </template>
 <script>
-  import {mapState} from 'vuex'
+  import {mapGetters} from 'vuex'
 
   export default {
     data() {
       return {}
     },
     computed: {
-      ...mapState(['dialogs']),
+      ...mapGetters(['DIALOGS_REVERSE']),
     },
-    mounted() {
-      console.log(this.dialogs.reverse())
-    }
   }
 </script>
 <style lang="scss">
+  .dialogs-wrapper {
+    width: 316px;
+    max-height: calc(100% - 120px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
   .dialogs {
     max-width: 300px;
     width: 100%;
-    max-height: 660px;
+    min-height: 100%;
   }
   .dialog-frame {
     position: relative;
@@ -69,6 +73,10 @@
       font-size: 14px;
       color: #35383d;
       margin-bottom: 5px;
+      max-width: 150px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
     &__text {
       display: -webkit-box;

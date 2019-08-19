@@ -3,20 +3,100 @@
     <form class="chat-input__group">
       <div class="chat-input__edit">
         <textarea v-model="message"
-                  rows="1"
                   placeholder="Введите текст..."
         ></textarea>
       </div>
-      <button @click.prevent class="chat-input__submit"></button>
+      <button class="chat-input__submit"
+              type="submit"
+              @click.prevent="sendMessage"
+      ></button>
     </form>
   </div>
 </template>
 <script>
+  import {mapState,mapActions} from 'vuex'
+
   export default {
     data() {
       return {
         message: '',
       }
+    },
+    computed: {
+      ...mapState(['DIALOGS']),
+      thatDialog() {
+        for (let item of this.DIALOGS) {
+          if (item.id === parseInt(this.$route.params.id)) return item
+        }
+      },
+      getDate() {
+        return this.getFullDate();
+      },
+    },
+    methods: {
+      ...mapActions(['SEND_MESSAGE']),
+      sendMessage(e) {
+        if (this.message === '') return;
+        // отправитель
+        let sender;
+        this.thatDialog.messages.forEach(message => {
+          if (e.ctrlKey) {
+            if (!message.out) {
+             return sender = {
+                author: message.author,
+                out: message.out
+              }
+            }
+          }
+          else {
+            if (message.out) {
+              return sender = {
+                author: message.author,
+                out: message.out
+              }
+            }
+          }
+        });
+
+        let msgParams = {
+          id: this.$route.params.id,
+          created: this.getDate.date,
+          message: {
+            id: this.thatDialog.messages.length + 1,
+            author: sender.author,
+            out: sender.out,
+            text: this.message,
+            created: this.getDate.fullDate
+          }
+        };
+        this.SEND_MESSAGE(msgParams);
+        this.message = '';
+      },
+      getFullDate() {
+        let date = new Date();
+        let months = ["янв", "фев", "мар", "апр",
+          "мая", "июн", "июл", "авг",
+          "сен", "окт", "ноя", "дек"];
+
+        let dd = date.getDate();
+        if (dd < 10) dd = `0${dd}`;
+
+        let mm = date.getMonth() + 1;
+        if (mm < 10) mm = `0${mm}`;
+
+        let yy = date.getFullYear();
+
+        let hh = date.getHours();
+        if (hh < 10) hh = `0${hh}`;
+
+        let min = date.getMinutes();
+        if (min < 10) min = `0${min}`;
+
+        return {
+          fullDate: `${dd}-${mm}-${yy} ${hh}:${min}`,
+          date: `${dd} ${months[mm - 1]} ${yy}`
+        }
+      },
     }
   }
 </script>
@@ -31,13 +111,13 @@
     }
     &__edit {
       width: 100%;
-      padding: 29px 0;
+      padding: 29px 0 16px;
       textarea {
         display: flex;
         border: none;
         padding-left: 30px;
+        padding-right: 80px;
         width: 100%;
-        min-height: 20px;
         max-height: 200px;
         resize: none;
         word-wrap: break-word;
@@ -48,7 +128,7 @@
       top: 0;
       right: 0;
       width: 80px;
-      height: 79px;
+      height: 100%;
       background: url('../../../static/img/send.svg') no-repeat center, #398bff;
       border: none;
       outline: none;

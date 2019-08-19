@@ -2,7 +2,6 @@
   <div class="chat-viewport">
     <chat-body></chat-body>
     <chat-input></chat-input>
-
   </div>
 </template>
 

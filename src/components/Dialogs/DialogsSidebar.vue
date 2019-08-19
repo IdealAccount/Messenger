@@ -1,7 +1,8 @@
 <template>
   <div class="sidebar-dialogs sidebar">
-    <div class="sidebar-title">Сообщения <span>{{dialogsLength}}</span></div>
+    <div class="sidebar-title">Сообщения <span>{{DIALOGS_LENGTH}}</span></div>
     <dialogs-list></dialogs-list>
+    <div class="sidebar-footer"></div>
   </div>
 </template>
 <script>
@@ -13,7 +14,7 @@
       DialogsList
     },
     computed: {
-      ...mapGetters(['dialogsLength'])
+      ...mapGetters(['DIALOGS_LENGTH'])
     }
   }
 </script>
@@ -22,7 +23,19 @@
     &-dialogs {
       max-width: 300px;
       background: #f3f6f8;
-      padding-bottom: 60px;
+      /*padding-bottom: 60px;*/
+      overflow: hidden;
+      &:after {
+        content: '';
+        position: relative;
+        bottom: 0;
+        left: 0;
+        z-index: 10;
+        display: block;
+        width: 100%;
+        height: 60px;
+        border-top: 1px solid #e9edf2;
+      }
     }
     &-title {
       font-size: 14px;
@@ -34,5 +47,13 @@
         margin-left: 10px;
       }
     }
+    /*&-footer {*/
+      /*z-index: 10;*/
+      /*background: inherit;*/
+      /*display: block;*/
+      /*width: 100%;*/
+      /*height: 60px;*/
+      /*border-top: 1px solid #e9edf2;*/
+    /*}*/
   }
 </style>

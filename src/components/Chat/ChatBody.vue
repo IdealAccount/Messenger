@@ -1,27 +1,63 @@
 <template>
   <div class="chat-body">
-    <div class="chat-track">
-      <!--<chat-messages></chat-messages>-->
-      <router-view></router-view>
+    <div class="chat-wrapper" ref="track">
+      <transition name="fade">
+        <router-view></router-view>
+      </transition>
     </div>
   </div>
 </template>
 <script>
   import ChatMessages from './ChatMessages'
+
   export default {
     components: {
       ChatMessages
+    },
+    data() {
+      return {}
+    },
+    mounted() {
+      this.scrollToBottom()
+    },
+    updated() {
+      this.scrollToBottom()
+    },
+    computed: {},
+    methods: {
+      scrollToBottom() {
+        this.$refs.track.scrollTop = this.$refs.track.children[0].scrollHeight
+      }
     }
   }
 </script>
 <style lang="scss">
-  .chat-body {
-    padding: 43px 16px 43px 39px;
-    height: 100%;
-    overflow: hidden;
+  .chat {
+    &-body {
+      height: 100%;
+      overflow: hidden;
+      padding-top: 20px;
+    }
+    &-wrapper {
+      display: flex;
+      flex-direction: column;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      width: calc(100% + 32px);
+      padding: 23px 40px 43px 39px;
+      max-height: 660px;
+      height: 100%;
+    }
   }
-  .chat-track {
-    height: auto;
-    min-height: 100%;
+
+  // ANIMATION
+  .fade-enter-active, .fade-leave-active {
+    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
+  .fade-leave, .fade-enter-to {
+    opacity: 1;
   }
 </style>

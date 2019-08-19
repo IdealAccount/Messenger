@@ -1,8 +1,13 @@
 <template>
   <ul class="msg-list">
-    <li :class="['msg-list__item', msgClass = (message.out ? 'msg-list__item--out' : 'msg-list__item--in')]" v-for="message of chatMessages">
-      <div class="msg"
-      >{{message.text}}</div>
+    <li v-for="message of chatMessages"
+        :key="message.id"
+        :class="['msg-list__item',
+        message.out ?
+        'msg-list__item--out' :
+        'msg-list__item--in']"
+    >
+      <span class="msg">{{message.text}}</span>
       <div class="msg-info">
         <span class="msg-info__author">
           <strong>{{message.author}}</strong>
@@ -14,60 +19,63 @@
 </template>
 <script>
   import {mapState} from 'vuex'
+
   export default {
     data() {
       return {
-        msgClass: {
-
-        },
       }
     },
     computed: {
-      ...mapState(['dialogs']),
+      ...mapState(['DIALOGS']),
       chatMessages() {
-        for (let item of this.dialogs) {
+        for (let item of this.DIALOGS) {
           if (item.id === parseInt(this.$route.params.id)) return item.messages
         }
-      }
+      },
     },
-    mounted() {
-      console.log(this.chatMessages)
-    }
   }
 </script>
 <style lang="scss">
 
   .msg-list {
-    display: flex;
-    flex-direction: column;
+    opacity: 1;
+    margin-top: auto;
+    padding: 0;
+    transition: .3s;
     &__item {
       display: flex;
       flex-direction: column;
       max-width: 380px;
       margin-bottom: 20px;
+      &:last-child {
+        margin-bottom: 0;
+      }
       &--out {
-        align-self: flex-end;
+        margin-left: auto;
         .msg {
+          align-self: flex-end;
+          margin-left: auto;
           background: #e9f5f4;
           &-info {
-            margin-left: auto;
+            text-align: right;
           }
         }
       }
       &--in {
-        align-self: flex-start;
         .msg {
           background: #f6f7f9;
         }
       }
     }
   }
+
   .msg {
-    padding: 18px 17px 16px 26px;
+    padding: 22px 22px 16px;
     border-radius: 8px;
     margin-bottom: 10px;
     color: #475453;
     font-size: 14px;
+    word-break: break-word;
     &-info {
       &__author {
         color: #000;
@@ -79,5 +87,16 @@
         color: #b7c0c8;
       }
     }
+  }
+  .slide-fade-enter-active {
+    transition: all .3s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .slide-fade-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active до версии 2.1.8 */ {
+    transform: translateX(10px);
+    opacity: 0;
   }
 </style>

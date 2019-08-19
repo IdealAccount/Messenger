@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    dialogs: [
+    DIALOGS: [
       {
         id: 1,
         subject: 'Привет',
@@ -25,7 +25,7 @@ export const store = new Vuex.Store({
             text: 'Привет, все хорошо, спасибо',
             out: false
           },
-        ]
+        ],
       },
       {
         id: 2,
@@ -139,33 +139,157 @@ export const store = new Vuex.Store({
           },
         ]
       },
-      //
-      // {
-      //   id: 7,
-      //   subject: 'Удалить иконки',
-      //   created: '12 мая 2023',
-      //   messages: [
-      //     {
-      //       id: 1,
-      //       author: 'Лена',
-      //       created: '2019-08-01 23:59',
-      //       text: 'Мне нужно удалить все иконки с рабочего стола,а у меня пропала "мышка", ты ж программист, приди разберись.',
-      //       out: false
-      //     },
-      //     {
-      //       id: 2,
-      //       author: 'Василий',
-      //       created: '2019-08-01 23:59',
-      //       text: 'Мышку поймал Том, всех благ вам',
-      //       out: true
-      //     },
-      //   ]
-      // },
+      {
+        id: 7,
+        subject: 'Удалить иконки',
+        created: '12 мая 2023',
+        messages: [
+          {
+            id: 1,
+            author: 'Лена',
+            created: '2019-08-01 23:59',
+            text: 'Мне нужно удалить все иконки с рабочего стола,а у меня пропала "мышка", ты ж программист, приди разберись.',
+            out: false
+          },
+          {
+            id: 2,
+            author: 'Василий',
+            created: '2019-08-01 23:59',
+            text: 'Мышку поймал Том, всех благ вам',
+            out: true
+          },
+        ]
+      },{
+        id: 8,
+        subject: 'Удалить иконки',
+        created: '12 мая 2023',
+        messages: [
+          {
+            id: 1,
+            author: 'Лена',
+            created: '2019-08-01 23:59',
+            text: 'Мне нужно удалить все иконки с рабочего стола,а у меня пропала "мышка", ты ж программист, приди разберись.',
+            out: false
+          },
+          {
+            id: 2,
+            author: 'Василий',
+            created: '2019-08-01 23:59',
+            text: 'Мышку поймал Том, всех благ вам',
+            out: true
+          },
+        ]
+      },{
+        id: 9,
+        subject: 'Удалить иконки',
+        created: '12 мая 2023',
+        messages: [
+          {
+            id: 1,
+            author: 'Лена',
+            created: '2019-08-01 23:59',
+            text: 'Мне нужно удалить все иконки с рабочего стола,а у меня пропала "мышка", ты ж программист, приди разберись.',
+            out: false
+          },
+          {
+            id: 2,
+            author: 'Василий',
+            created: '2019-08-01 23:59',
+            text: 'Мышку поймал Том, всех благ вам',
+            out: true
+          },{
+            id: 3,
+            author: 'Лена',
+            created: '2019-08-01 23:59',
+            text: 'Мне нужно удалить все иконки с рабочего стола,а у меня пропала "мышка", ты ж программист, приди разберись.',
+            out: false
+          },
+          {
+            id: 4,
+            author: 'Василий',
+            created: '2019-08-01 23:59',
+            text: 'Мышку поймал Том, всех благ вам',
+            out: true
+          },{
+            id: 5,
+            author: 'Лена',
+            created: '2019-08-01 23:59',
+            text: 'Мне нужно удалить все иконки с рабочего стола,а у меня пропала "мышка", ты ж программист, приди разберись.',
+            out: false
+          },
+          {
+            id: 6,
+            author: 'Василий',
+            created: '2019-08-01 23:59',
+            text: 'Мышку поймал Том, всех благ вам',
+            out: true
+          },{
+            id: 7,
+            author: 'Лена',
+            created: '2019-08-01 23:59',
+            text: 'Мне нужно удалить все иконки с рабочего стола,а у меня пропала "мышка", ты ж программист, приди разберись.',
+            out: false
+          },
+          {
+            id: 8,
+            author: 'Василий',
+            created: '2019-08-01 23:59',
+            text: 'Мышку поймал Том, всех благ вам',
+            out: true
+          },{
+            id: 9,
+            author: 'Лена',
+            created: '2019-08-01 23:59',
+            text: 'Мне нужно удалить все иконки с рабочего стола,а у меня пропала "мышка", ты ж программист, приди разберись.',
+            out: false
+          },
+          {
+            id: 10,
+            author: 'Василий',
+            created: '2019-08-01 23:59',
+            text: 'Мышку поймал Том, всех благ вам',
+            out: true
+          },{
+            id: 11,
+            author: 'Лена',
+            created: '2019-08-01 23:59',
+            text: 'Мне нужно удалить все иконки с рабочего стола,а у меня пропала "мышка", ты ж программист, приди разберись.',
+            out: false
+          },
+          {
+            id: 12,
+            author: 'Василий',
+            created: '2019-08-01 23:59',
+            text: 'Мышку поймал Том, всех благ вам',
+            out: true
+          },
+        ]
+      },
     ],
   },
   getters: {
-    dialogsLength: state => {
-      return state.dialogs.length;
+    DIALOGS_LENGTH: state => {
+      return state.DIALOGS.length;
+    },
+    DIALOGS_REVERSE: state => {
+      return state.DIALOGS.reverse();
     }
+  },
+  mutations: {
+    ADD_MESSAGE: (state, payload) => {
+      state.DIALOGS.forEach(dialog => {
+        if (dialog.id === parseInt(payload.id)) {
+          dialog.created = payload.created;
+          dialog.messages.push(payload.message);
+        }
+      })
+    },
+  },
+  actions: {
+    SEND_MESSAGE: async (context, payload) => {
+      await setTimeout(() => {
+        context.commit('ADD_MESSAGE', payload)
+      }, 1000)
+    },
   }
 });
