@@ -24,32 +24,41 @@
       ChatMessages
     },
     data() {
-      return {}
+      return {
+        scrollBlock: {},
+      }
     },
     mounted() {
-      this.$refs.track.addEventListener('scroll', this.showArrow);
+      this.scrollBlock = this.$refs.track;
+      this.scrollBlock.addEventListener('scroll', this.showArrow);
       this.scrollToBottom()
     },
     updated() {
-      this.scrollToBottom()
+      this.scrollToBottom();
+      this.showArrow();
     },
     methods: {
       scrollToBottom() {
-        this.$refs.track.scrollTop = this.$refs.track.children[0].scrollHeight
+        // this.$refs.track.scrollTop = this.$refs.track.children[0].scrollHeight
+        this.scrollBlock.scrollTop = this.scrollBlock.children[0].scrollHeight
       },
       showArrow() {
-        let height = 500;
-        let parent = this.$refs.track;
-        let toBotoom = this.$refs.arrow;
-        let msgList = this.$refs.track.children[0];
+        // let parent = this.$refs.track;
+        let toBottom = this.$refs.arrow;
+        let msgListHeight = this.scrollBlock.children[0].scrollHeight;
+        let scrollTop = this.scrollBlock.scrollTop;
+        let height = msgListHeight - this.scrollBlock.clientHeight;
 
-        if (msgList.scrollHeight > 1200) {
-          if (parent.scrollTop < height) {
-            toBotoom.classList.add('show');
-          } else toBotoom.classList.remove('show');
-        } else toBotoom.classList.remove('show');
+        if (msgListHeight > 1200) {
+          if (scrollTop < height) {
+            toBottom.classList.add('show');
+          } else toBottom.classList.remove('show');
+        } else toBottom.classList.remove('show');
       }
     },
+    beforeDestroy() {
+      this.scrollBlock.removeEventListener('scroll', this.showArrow);
+    }
   }
 </script>
 <style lang="scss">

@@ -15,7 +15,7 @@
     </form>
     <div class="loader-container" ref="loader">
       <div class="bubbles">
-        <div class="bubble" v-for="n of 4">
+        <div class="bubble" v-for="n in 4">
           <div class="circle"></div>
         </div>
       </div>
@@ -109,7 +109,6 @@
         let track = document.querySelector('.chat-wrapper');
 
         track.scrollTop = msgList.scrollHeight;
-        console.log(msgList.scrollHeight)
       },
       getFullDate() {
         let date = new Date();
@@ -153,7 +152,6 @@
       width: 100%;
       padding: 29px 0 16px;
       textarea {
-        display: flex;
         border: none;
         padding-left: 30px;
         padding-right: 80px;
