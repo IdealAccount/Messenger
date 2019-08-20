@@ -4,15 +4,16 @@
       <div class="chat-input__edit">
         <textarea v-model="message"
                   placeholder="Введите текст..."
-                  ref="input"
+                  :disabled="isLocking"
+                  @keyup.prevent="sendMessage"
         ></textarea>
       </div>
-      <button class="chat-input__submit"
+      <button :class="['chat-input__submit', {active: isLocking}]"
               type="submit"
               @click.prevent="sendMessage"
-              @mouseenter="active = true"
+              @mouseover="active = true"
               @mouseleave="active = false"
-              ref="submit"
+              :disabled="isLocking"
       >
         <span class="submit-title"
               ref="title"
@@ -23,7 +24,7 @@
         </span>
       </button>
     </form>
-    <div class="loader-container" ref="loader">
+    <div class="loader-container" v-if="isLocking">
       <div class="bubbles">
         <div class="bubble" v-for="n in 4">
           <div class="circle"></div>
@@ -39,8 +40,12 @@
     data() {
       return {
         message: '',
-        active: false
+        active: false,
+        isLocking: false
       }
+    },
+    mounted() {
+      // window.onkeydown = (e) => console.log(e)
     },
     computed: {
       ...mapState(['DIALOGS']),
@@ -57,52 +62,39 @@
       //     if (!message.out) return message.author
       //   }
       // }
-
     },
     methods: {
       ...mapActions(['SEND_MESSAGE']),
 
       sendMessage(event) {
-        if (this.message === '') return;
-        let sender = this.getSender(event);
+        if ((event.keyCode === 13 && !event.shiftKey) || event.type === 'click') {
+          if (this.message.trim() === '') return;
 
-        this.inSending();
-        // отправитель
+          let sender = this.getSender(event);
+          this.locking();
+          // отправитель
 
-        let msgParams = {
-          id: this.$route.params.id,
-          created: this.getDate.date,
-          message: {
-            id: this.thatDialog.messages.length + 1,
-            author: sender.author,
-            out: sender.out,
-            text: this.message,
-            created: this.getDate.fullDate
-          }
-        };
-        this.SEND_MESSAGE(msgParams);
-        this.message = '';
-        setTimeout(() => this.autoScroll(), 1000)
+          let msgParams = {
+            id: this.$route.params.id,
+            created: this.getDate.date,
+            message: {
+              id: this.thatDialog.messages.length + 1,
+              author: sender.author,
+              out: sender.out,
+              text: this.message,
+              created: this.getDate.fullDate
+            }
+          };
+          this.SEND_MESSAGE(msgParams);
+          this.message = '';
+          setTimeout(() => this.autoScroll(), 400)
+        }
       },
-      inSending() {
-        // Показать прелоадер
-        let loader = this.$refs.loader;
-        loader.classList.add('active');
-
-        // Блокируем ввод
-        let input = this.$refs.input;
-        input.disabled = true;
-        // Блокировать отправку
-        let btn = this.$refs.submit;
-        btn.disabled = true;
-        btn.style.backgroundColor = '#828282';
+      locking() {
+        this.isLocking = true;
         // отменить все модификации через 1сек
-        setTimeout(() => {
-          input.disabled = false;
-          btn.disabled = false;
-          btn.style.background = '';
-          loader.classList.remove('active');
-        }, 1000);
+        setTimeout(() => this.isLocking = false, 400);
+
       },
       getSender(event) {
         let sender;
@@ -154,9 +146,9 @@
       },
       autoScroll() {
         let msgList = document.querySelector('.msg-list');
-        let track = document.querySelector('.chat-wrapper');
+        let scrollTrack = document.querySelector('.chat-wrapper');
 
-        track.scrollTop = msgList.scrollHeight;
+        scrollTrack.scrollTop = msgList.scrollHeight;
       },
     },
 
@@ -203,6 +195,9 @@
       transition: .3s;
       &:hover {
         background-color: #0557CB;
+      }
+      &.active {
+        background-color: rgb(130,130,130);
       }
       .submit-title {
         position: absolute;

@@ -1,7 +1,7 @@
 <template>
   <div class="chat-body">
     <div class="to-bottom"
-         ref="arrow"
+         v-show="isShow"
          @click="scrollToBottom"
     ></div>
     <div class="viewport-loader">
@@ -25,12 +25,13 @@
     },
     data() {
       return {
+        isShow: false,
         scrollBlock: {},
       }
     },
     mounted() {
       this.scrollBlock = this.$refs.track;
-      this.scrollBlock.addEventListener('scroll', this.showArrow);
+      // this.scrollBlock.addEventListener('scroll', this.showArrow);
       this.scrollToBottom()
     },
     updated() {
@@ -44,16 +45,10 @@
       },
       showArrow() {
         // let parent = this.$refs.track;
-        let toBottom = this.$refs.arrow;
-        let msgListHeight = this.scrollBlock.children[0].scrollHeight;
-        let scrollTop = this.scrollBlock.scrollTop;
-        let height = msgListHeight - this.scrollBlock.clientHeight;
-
-        if (msgListHeight > 1200) {
-          if (scrollTop < height) {
-            toBottom.classList.add('show');
-          } else toBottom.classList.remove('show');
-        } else toBottom.classList.remove('show');
+        // let msgListHeight = this.scrollBlock.children[0].scrollHeight;
+        // let scrollTop = this.scrollBlock.scrollTop;
+        // let height = msgListHeight - this.scrollBlock.clientHeight;
+        // if (scrollTop < height) this.isShow = !this.isShow;
       }
     },
     beforeDestroy() {

@@ -1,14 +1,10 @@
 .loader-container {
-  display: none;
   position: absolute;
   bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
   max-width: 100px;
   text-align: center;
-  &.active {
-    display: block;
-  }
 }
 
 .bubbles {

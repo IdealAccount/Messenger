@@ -7,7 +7,7 @@
         'msg-list__item--out' :
         'msg-list__item--in']"
     >
-      <span class="msg">{{message.text}}</span>
+      <span class="msg" v-html="message.text"></span>
       <div class="msg-info">
         <span class="msg-info__author">
           <strong>{{message.author}}</strong>
@@ -40,7 +40,6 @@
   .msg-list {
     margin-top: auto;
     padding: 23px 16px 33px 29px;
-
     &__item {
       display: flex;
       flex-direction: column;
