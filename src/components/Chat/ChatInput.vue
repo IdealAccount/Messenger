@@ -4,13 +4,22 @@
       <div class="chat-input__edit">
         <textarea v-model="message"
                   placeholder="Введите текст..."
+                  ref="input"
         ></textarea>
       </div>
       <button class="chat-input__submit"
               type="submit"
               @click.prevent="sendMessage"
+              ref="submit"
       ></button>
     </form>
+    <div class="loader-container" ref="loader">
+      <div class="bubbles">
+        <div class="bubble" v-for="n of 4">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -38,13 +47,7 @@
       sendMessage(event) {
         if (this.message === '') return;
 
-        let btn = event.currentTarget;
-        btn.disabled = true;
-        btn.style.backgroundColor = '#828282'
-        setTimeout(() => {
-          btn.disabled = false
-          btn.style.background = '';
-          }, 1000);
+        this.inSending();
         // отправитель
         let sender;
         this.thatDialog.messages.forEach(message => {
@@ -79,6 +82,34 @@
         };
         this.SEND_MESSAGE(msgParams);
         this.message = '';
+        setTimeout(() => this.autoScroll(), 1000)
+      },
+      inSending() {
+        // Показать прелоадер
+        let loader = this.$refs.loader;
+        loader.classList.add('active');
+
+        // Блокируем ввод
+        let input = this.$refs.input;
+        input.disabled = true;
+        // Блокировать отправку
+        let btn = this.$refs.submit;
+        btn.disabled = true;
+        btn.style.backgroundColor = '#828282';
+        // отменить все модификации через 1сек
+        setTimeout(() => {
+          input.disabled = false;
+          btn.disabled = false;
+          btn.style.background = '';
+          loader.classList.remove('active');
+        }, 1000);
+      },
+      autoScroll() {
+        let msgList = document.querySelector('.msg-list');
+        let track = document.querySelector('.chat-wrapper');
+
+        track.scrollTop = msgList.scrollHeight;
+        console.log(msgList.scrollHeight)
       },
       getFullDate() {
         let date = new Date();
@@ -105,7 +136,8 @@
           date: `${dd} ${months[mm - 1]} ${yy}`
         }
       },
-    }
+    },
+
   }
 </script>
 
@@ -129,6 +161,13 @@
         max-height: 200px;
         resize: none;
         word-wrap: break-word;
+        &::placeholder {
+          font-family: TT Norms, sans-serif;
+          font-size: 14px;
+        }
+        &:disabled {
+          background: none;
+        }
       }
     }
     &__submit {

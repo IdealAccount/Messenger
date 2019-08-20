@@ -61,6 +61,7 @@
       }
       &--in {
         .msg {
+          margin-right: auto;
           background: #f6f7f9;
         }
       }

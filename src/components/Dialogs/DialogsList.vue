@@ -20,17 +20,27 @@
   import {mapGetters} from 'vuex'
 
   export default {
-    data() {
-      return {}
-    },
     computed: {
       ...mapGetters(['DIALOGS_REVERSE']),
     },
     methods: {
       goTo(event) {
-        if (event.target.tagName !== 'LI') return
-        console.log(event.target)
+        let dialog = event.target;
+        if (dialog.classList.contains('active')) return;
 
+        let loader = document.querySelector('.viewport-loader');
+        let loaderBg = document.createElement('div');
+
+        dialog.classList.add('active');
+
+        loaderBg.classList.add('loader-bg');
+        document.querySelector('.chat-body').append(loaderBg);
+        loader.classList.add('active');
+
+        setTimeout(() => {
+          loaderBg.remove();
+          loader.classList.remove('active');
+        }, 800);
       }
     }
   }
@@ -42,11 +52,13 @@
     overflow-y: scroll;
     overflow-x: hidden;
   }
+
   .dialogs {
     max-width: 300px;
     width: 100%;
     min-height: 100%;
   }
+
   .dialog-frame {
     position: relative;
     max-width: 300px;
@@ -57,6 +69,16 @@
     border-bottom: 1px solid #e9edf2;
     transition: .3s;
     cursor: pointer;
+    &:after {
+      content: '';
+      position: absolute;
+      display: block;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 20;
+    }
     &:before {
       content: '';
       position: absolute;
@@ -103,6 +125,7 @@
       color: #b7c0c8;
     }
   }
+
   .router-link-exact-active {
     background: #fff;
     &:before {
@@ -111,5 +134,14 @@
     .dialog-frame__date {
       color: #7d8790;
     }
+  }
+
+  .loader-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(#fefefe, .98);
   }
 </style>
