@@ -10,7 +10,7 @@
       <div class="viewport-inner viewport-two"></div>
     </div>
     <div class="chat-wrapper" ref="track">
-      <transition name="fade">
+      <transition name="fade" mode="out-in">
         <router-view></router-view>
       </transition>
     </div>
@@ -67,33 +67,19 @@
       position: relative;
       height: 100%;
       overflow: hidden;
-      padding-top: 20px;
+      /*padding: 10px;*/
     }
     &-wrapper {
       display: flex;
       flex-direction: column;
       overflow-y: scroll;
       overflow-x: hidden;
-      width: calc(100% + 16px);
-      padding: 23px 18px 43px 39px;
+      width: calc(100% + 36px);
+      padding-right: 19px;
       max-height: 660px;
       height: 100%;
     }
   }
-
-  // ANIMATION
-  .fade-enter-active, .fade-leave-active {
-    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-  }
-
-  .fade-enter, .fade-leave-to {
-    opacity: 0;
-  }
-
-  .fade-leave, .fade-enter-to {
-    opacity: 1;
-  }
-
   .viewport-loader {
     display: none;
     top: 50%;
@@ -130,5 +116,19 @@
     &.show {
       display: block;
     }
+  }
+
+  // ANIMATION
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .4s ease, transform .2s ease-in-out;
+  }
+  .fade-enter, .fade-leave-to {
+    transform: translateY(10%);
+    opacity: 0;
+  }
+
+  .fade-enter-to, .fade-leave  {
+    transform: translateY(0%);
+    opacity: 1;
   }
 </style>

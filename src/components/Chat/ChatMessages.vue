@@ -39,7 +39,8 @@
 
   .msg-list {
     margin-top: auto;
-    padding: 0;
+    padding: 23px 16px 33px 29px;
+
     &__item {
       display: flex;
       flex-direction: column;

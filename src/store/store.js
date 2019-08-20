@@ -273,6 +273,9 @@ export const store = new Vuex.Store({
     },
     DIALOGS_REVERSE: state => {
       return state.DIALOGS.reverse();
+    },
+    LAST_DIALOG: state => {
+      return state.DIALOGS.reverse()[state.DIALOGS.length - 1]
     }
   },
   mutations: {

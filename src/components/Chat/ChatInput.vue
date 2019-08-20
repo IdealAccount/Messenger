@@ -10,8 +10,18 @@
       <button class="chat-input__submit"
               type="submit"
               @click.prevent="sendMessage"
+              @mouseenter="active = true"
+              @mouseleave="active = false"
               ref="submit"
-      ></button>
+      >
+        <span class="submit-title"
+              ref="title"
+              v-show="active"
+        >
+          Чтобы получить входящее сообщение
+          зажмите CTRL
+        </span>
+      </button>
     </form>
     <div class="loader-container" ref="loader">
       <div class="bubbles">
@@ -29,6 +39,7 @@
     data() {
       return {
         message: '',
+        active: false
       }
     },
     computed: {
@@ -41,33 +52,22 @@
       getDate() {
         return this.getFullDate();
       },
+      // authorName() {
+      //   for (let message of this.thatDialog.messages) {
+      //     if (!message.out) return message.author
+      //   }
+      // }
+
     },
     methods: {
       ...mapActions(['SEND_MESSAGE']),
+
       sendMessage(event) {
         if (this.message === '') return;
+        let sender = this.getSender(event);
 
         this.inSending();
         // отправитель
-        let sender;
-        this.thatDialog.messages.forEach(message => {
-          if (event.ctrlKey) {
-            if (!message.out) {
-             return sender = {
-                author: message.author,
-                out: message.out
-              }
-            }
-          }
-          else {
-            if (message.out) {
-              return sender = {
-                author: message.author,
-                out: message.out
-              }
-            }
-          }
-        });
 
         let msgParams = {
           id: this.$route.params.id,
@@ -104,11 +104,28 @@
           loader.classList.remove('active');
         }, 1000);
       },
-      autoScroll() {
-        let msgList = document.querySelector('.msg-list');
-        let track = document.querySelector('.chat-wrapper');
-
-        track.scrollTop = msgList.scrollHeight;
+      getSender(event) {
+        let sender;
+        this.thatDialog.messages.forEach(message => {
+          if (event.ctrlKey) {
+            if (!message.out) {
+              this.author = message.author;
+              return sender = {
+                author: message.author,
+                out: message.out
+              }
+            }
+          }
+          else {
+            if (message.out) {
+              return sender = {
+                author: message.author,
+                out: message.out
+              }
+            }
+          }
+        });
+        return sender;
       },
       getFullDate() {
         let date = new Date();
@@ -134,6 +151,12 @@
           fullDate: `${dd}-${mm}-${yy} ${hh}:${min}`,
           date: `${dd} ${months[mm - 1]} ${yy}`
         }
+      },
+      autoScroll() {
+        let msgList = document.querySelector('.msg-list');
+        let track = document.querySelector('.chat-wrapper');
+
+        track.scrollTop = msgList.scrollHeight;
       },
     },
 
@@ -180,6 +203,28 @@
       transition: .3s;
       &:hover {
         background-color: #0557CB;
+      }
+      .submit-title {
+        position: absolute;
+        transition: .3s ease-in-out;
+        width: 150px;
+        padding: 20px 10px;
+        font-size: 12px;
+        background: #333;
+        border-radius: 6px;
+        color: #fff;
+        top: calc(100% + 20px);
+        left: calc(-50% + 5px);
+        &:before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 50%;
+          transform: translate(-50%, -100%);
+          display: inline-block;
+          border: 10px solid;
+          border-color: transparent transparent #333 transparent;
+        }
       }
     }
   }
